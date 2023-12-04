@@ -1,0 +1,23 @@
+type: Test
+spec:
+  id: gcoYpXHSR
+  name: List Products
+  description: List Products calling Frontend
+  trigger:
+    type: http
+    httpRequest:
+      method: GET
+      url: http://otel-demo-frontend.otel-demo.svc.cluster.local:8080/api/products
+      headers:
+      - key: Content-Type
+        value: application/json
+  specs:
+  - selector: span[tracetest.span.type="general" name="Tracetest trigger"]
+    name: Test trigger should receive a success response from frontend
+    assertions:
+    - attr:tracetest.response.status  =  200
+  - selector: span[tracetest.span.type="rpc" name="oteldemo.ProductCatalogService/ListProducts" rpc.system="grpc" rpc.method="ListProducts" rpc.service="oteldemo.ProductCatalogService"]
+    name: ProductCatalogService/ListProducts should be called via gRPC and return 10 products
+    assertions:
+    - attr:app.products.count   =   10
+    - attr:rpc.grpc.status_code   =   0
