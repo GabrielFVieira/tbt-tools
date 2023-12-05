@@ -1,8 +1,0 @@
-type: VariableSet
-spec:
-  id: K7Dkt3NIg
-  name: Otel Demo
-  description: Otel demo tests variables
-  values:
-    - key: productId
-      value: 0PUK6V6EV0

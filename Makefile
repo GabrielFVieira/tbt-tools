@@ -1,4 +1,5 @@
 JEST_OTEL_FOLDER=jest-opentelemetry
+TRACETEST_FOLDER=tracetest
 
 ##@ General
 
@@ -18,3 +19,13 @@ jestotel-run: ## Run the jest-opentelemetry tests
 .PHONY: jestotel-receiver
 jestotel-receiver: ## Run thje jest-opentelemetry receiver application
 	@ node jest-opentelemetry/node_modules/@traceloop/otel-receiver/dist/index.js
+
+##@ Jest OpenTelemetry
+
+.PHONY: tracetest-setup
+tracetest-setup: ## Install the tracetest tests on the server
+	@ bash ./${TRACETEST_FOLDER}/setup.sh
+
+.PHONY: tracetest-run
+tracetest-run: ## Run the tracetest tests on the server
+	@ bash ./${TRACETEST_FOLDER}/run.sh

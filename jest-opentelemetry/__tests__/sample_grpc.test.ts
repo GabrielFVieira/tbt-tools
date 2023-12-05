@@ -1,7 +1,7 @@
 import { jest, describe, it, beforeAll } from "@jest/globals";
 import { expectTrace, TraceLoop } from "@traceloop/expect-opentelemetry";
 import { ChannelCredentials } from "@grpc/grpc-js";
-import { ProductCatalogServiceClient } from "../protos/demo";
+import { Product, ProductCatalogServiceClient } from "../protos/demo";
 
 jest.setTimeout(30000);
 
@@ -12,14 +12,21 @@ describe("resource http request matchers", () => {
 			traceloop = new TraceLoop();
 
 			const client = new ProductCatalogServiceClient("localhost:8083", ChannelCredentials.createInsecure());
+			const productCatalogGateway = () => ({
+				getProduct(id: string) {
+					return new Promise<Product>((resolve, reject) =>
+						client.getProduct({ id }, (error, response) => (error ? reject(error) : resolve(response)))
+					);
+				},
+			});
 
-			client.getProduct({ id: "2ZYFJ3GM2N" }, () => {});
-
-			// await traceloop.axiosInstance.get("http://host.docker.internal:8080/api/products/2ZYFJ3GM2N");
+			await productCatalogGateway().getProduct("2ZYFJ3GM2N");
 			await traceloop.fetchTraces({ url: "http://localhost:4123/v1/traces" });
+
+			client.close();
 		});
 
-		it("should contain inbound http call to emails-service", async () => {
+		it("should contain inbound http call to productcatalogservice", async () => {
 			expectTrace(traceloop.serviceByName("productcatalogservice")).toReceiveGrpcRequest().withRpcMethod("GetProduct");
 		});
 	});

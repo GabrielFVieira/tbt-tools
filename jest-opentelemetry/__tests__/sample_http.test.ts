@@ -27,7 +27,7 @@ describe("resource http request matchers", () => {
 		// 		.withStatusCode(200);
 		// });
 
-		it("should contain inbound http call to emails-service", async () => {
+		it("should contain inbound http call to frontend", async () => {
 			expectTrace(traceloop.serviceByName("frontend"))
 				.toReceiveHttpRequest()
 				.withMethod("GET")

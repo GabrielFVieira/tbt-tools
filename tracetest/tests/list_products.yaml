@@ -7,7 +7,7 @@ spec:
     type: http
     httpRequest:
       method: GET
-      url: http://otel-demo-frontend.otel-demo.svc.cluster.local:8080/api/products
+      url: ${env:FRONTEND_ADDRESS}/api/products
       headers:
       - key: Content-Type
         value: application/json
@@ -21,3 +21,7 @@ spec:
     assertions:
     - attr:app.products.count   =   10
     - attr:rpc.grpc.status_code   =   0
+  outputs:
+  - name: otel.product.id
+    selector: span[tracetest.span.type="general" name="Tracetest trigger"]
+    value: attr:tracetest.response.body | json_path '$[0].id'
