@@ -1,0 +1,23 @@
+type: Test
+spec:
+  id: xn3X5qNSg
+  name: Get Product
+  trigger:
+    type: http
+    httpRequest:
+      method: GET
+      url: http://otel-demo-frontend.otel-demo.svc.cluster.local:8080/api/products/${env:productId}
+      headers:
+      - key: Content-Type
+        value: application/json
+  specs:
+  - selector: span[tracetest.span.type="general" name="Tracetest trigger"]
+    name: Test trigger should receive a success response with the given product data
+    assertions:
+    - attr:tracetest.response.body | json_path '$.id'     =  "${env:productId}"
+    - attr:tracetest.response.status = 200
+  - selector: span[tracetest.span.type="rpc" name="oteldemo.ProductCatalogService/GetProduct" rpc.system="grpc" rpc.method="GetProduct" rpc.service="oteldemo.ProductCatalogService"]
+    name: ProductCatalogService/GetProduct should be called via gRPC
+    assertions:
+    - attr:app.product.id     =  "${env:productId}"
+    - attr:rpc.grpc.status_code     =     0

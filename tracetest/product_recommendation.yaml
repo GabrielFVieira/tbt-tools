@@ -2,7 +2,6 @@ type: Test
 spec:
   id: uqLD2XHSg
   name: Product Recommendation
-  description: Should get the products recommendation
   trigger:
     type: http
     httpRequest:
@@ -13,9 +12,10 @@ spec:
         value: application/json
   specs:
   - selector: span[tracetest.span.type="general" name="Tracetest trigger"]
-    name: Test trigger should receive a success response from frontend
+    name: Test trigger should receive a success response from frontend with 4 recommended products
     assertions:
-    - attr:tracetest.response.status  =  200
+    - attr:tracetest.response.status    =    200
+    - attr:tracetest.response.body | json_path '$[*]' | length  =  4
   - selector: span[tracetest.span.type="rpc" name="/oteldemo.RecommendationService/ListRecommendations" rpc.system="grpc" rpc.method="ListRecommendations" rpc.service="oteldemo.RecommendationService"]
     name: RecomendationService/ListRecommendations should be called via gRPC and return recommend 5 products
     assertions:
@@ -31,3 +31,12 @@ spec:
     assertions:
     - attr:app.products.count = 10
     - attr:rpc.grpc.status_code = 0
+  - selector: span[tracetest.span.type="rpc" name="/oteldemo.FeatureFlagService/GetFlag" rpc.system="grpc" app.featureflag.name="recommendationCache"]
+    name: FeatureFlagService/GetFlag should be called checking the value of the recommendationCache flag
+    assertions:
+    - attr:app.featureflag.enabled != ""
+  - selector: span[tracetest.span.type="database" name="featureflagservice.repo.query:featureflags" db.name="ffs"]
+    name: Feature flag database should be called by it's service
+    assertions:
+    - attr:source  =  "featureflags"
+    - attr:tracetest.span.type  =  "database"
