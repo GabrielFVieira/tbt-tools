@@ -88,3 +88,11 @@
   #### Fluxos do sistema a testar:
 
   Os testes dos fluxos **Obter recomendações** e **Realizar compra** deverão apresentar falhas e sinalizar que traces não ocorreram no fluxo.
+
+## Testes criados:
+
+|                     | Tracetest | Jest OpenTelemetry |
+| ------------------- | :-------: | :----------------: |
+| Fluxos              |     6     |         6          |
+| Traces testados     |    34     |         30         |
+| Asserts individuais |    67     |         84         |

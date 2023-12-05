@@ -5,8 +5,8 @@ spec:
   trigger:
     type: grpc
     grpc:
-      protobufFile: ../../tbt-system/pb/demo.proto
-      address: ${env:RECOMMENDATION_SVC_ADDRESS}:8080
+      protobufFile: ../../../tbt-system/pb/demo.proto
+      address: ${env:RECOMMENDATION_SVC_ADDRESS}
       method: oteldemo.RecommendationService.ListRecommendations
       auth: {}
   specs:
