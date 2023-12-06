@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "TRACELOOP_URL='http://localhost:4123/v1/traces' FRONTEND_SERVICE_ADDR='http://host.docker.internal:8080' RECOMMENDATION_SERVICE_ADDR='localhost:8083' jest --detectOpenHandles"
+		"test": "TRACELOOP_URL='http://localhost:4123/v1/traces' FRONTEND_SERVICE_ADDR='http://host.docker.internal:8080' RECOMMENDATION_SERVICE_ADDR='localhost:8083' jest",
+		"test:k8s": "TRACELOOP_URL='http://localhost:4123/v1/traces' FRONTEND_SERVICE_ADDR='http://otel-demo-frontend.otel-demo.svc.cluster.local:8080' RECOMMENDATION_SERVICE_ADDR='otel-demo-recommendationservice.otel-demo.svc.cluster.local:8080' jest"
 	},
 	"keywords": [],
 	"author": "",

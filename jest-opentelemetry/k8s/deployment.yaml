@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jestotel
+  namespace: jest-opentelemetry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jestotel
+  template:
+    metadata:
+      labels:
+        app: jestotel
+    spec:
+      containers:
+        - name: jestotel
+          image: dev.local/jestotel:sc1
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 4123
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jestotel
+  namespace: jest-opentelemetry
+spec:
+  ports:
+    - port: 4123
+      protocol: TCP
+      targetPort: 4123
+  selector:
+    app: jestotel
