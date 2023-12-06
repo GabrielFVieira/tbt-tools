@@ -4,6 +4,7 @@ import crypto from "crypto";
 
 const { FRONTEND_SERVICE_ADDR = "" } = process.env;
 const TEST_PRODUCT_ID = "0PUK6V6EV0";
+const FETCH_TRACES_CONFIG = { maxPollTime: 15000, awaitAllSpansInTraceTimeout: 4000 }
 
 jest.setTimeout(30000);
 
@@ -16,7 +17,7 @@ describe("Application flow simulating the user interaction when trying to buy a 
 			traceloop = new TraceLoop();
 
 			await traceloop.axiosInstance.get(`${FRONTEND_SERVICE_ADDR}/api/products`);
-			await traceloop.fetchTraces();
+			await traceloop.fetchTraces(FETCH_TRACES_CONFIG);
 		});
 
 		it("Frontend endpoint should be called on GET /api/products", async () => {
@@ -41,7 +42,7 @@ describe("Application flow simulating the user interaction when trying to buy a 
 			traceloop = new TraceLoop();
 
 			await traceloop.axiosInstance.get(`${FRONTEND_SERVICE_ADDR}/api/products/${TEST_PRODUCT_ID}`);
-			await traceloop.fetchTraces();
+			await traceloop.fetchTraces(FETCH_TRACES_CONFIG);
 		});
 
 		it(`Frontend endpoint should be called on GET /api/products/${TEST_PRODUCT_ID}`, async () => {
@@ -60,13 +61,39 @@ describe("Application flow simulating the user interaction when trying to buy a 
 		});
 	});
 
+
+
+
+	describe("Sample test", () => {
+		let traceloop: TraceLoop;
+		beforeAll(async () => {
+			traceloop = new TraceLoop();
+
+			await traceloop.axiosInstance.get(`${FRONTEND_SERVICE_ADDR}/api/products`);
+			await traceloop.fetchTraces(FETCH_TRACES_CONFIG);
+		});
+
+		it(`Frontend endpoint should be called on GET /api/products/${TEST_PRODUCT_ID}`, async () => {
+			expectTrace(traceloop.serviceByName("frontend")).;
+		});
+	});
+
+
+
+
+
+
+
+
+
+
 	describe("Get products recommendations", () => {
 		let traceloop: TraceLoop;
 		beforeAll(async () => {
 			traceloop = new TraceLoop();
 
 			await traceloop.axiosInstance.get(`${FRONTEND_SERVICE_ADDR}/api/recommendations`);
-			await traceloop.fetchTraces();
+			await traceloop.fetchTraces(FETCH_TRACES_CONFIG);
 		});
 
 		it("Frontend endpoint should be called on GET /api/recommendations", async () => {
@@ -111,7 +138,7 @@ describe("Application flow simulating the user interaction when trying to buy a 
 					quantity: 1,
 				},
 			});
-			await traceloop.fetchTraces();
+			await traceloop.fetchTraces(FETCH_TRACES_CONFIG);
 		});
 
 		it("Frontend endpoint should be called on POST /api/cart", async () => {
@@ -172,7 +199,7 @@ describe("Application flow simulating the user interaction when trying to buy a 
 					creditCardNumber: "4432-8015-6152-0454",
 				},
 			});
-			await traceloop.fetchTraces();
+			await traceloop.fetchTraces(FETCH_TRACES_CONFIG);
 		});
 
 		it("Frontend endpoint should be called on POST /api/checkout", async () => {
