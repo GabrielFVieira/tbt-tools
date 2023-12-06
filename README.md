@@ -89,10 +89,19 @@
 
   Os testes dos fluxos **Obter recomendações** e **Realizar compra** deverão apresentar falhas e sinalizar que traces não ocorreram no fluxo.
 
-## Testes criados:
+## Dados sobre as ferramentas:
 
-|                     | Tracetest | Jest OpenTelemetry |
-| ------------------- | :-------: | :----------------: |
-| Fluxos              |     6     |         6          |
-| Traces testados     |    34     |         30         |
-| Asserts individuais |    67     |         84         |
+|                              | Tracetest | Jest OpenTelemetry |
+| ---------------------------- | :-------: | :----------------: |
+| **TESTES**                   |           |                    |
+| Fluxos testados              |     6     |         6          |
+| Traces testados              |    34     |         30         |
+| Asserts individuais          |    67     |         84         |
+|                              |           |                    |
+| **RECURSOS**                 |           |                    |
+| Uso de CPU em iddle          |   2.31%   |         0          |
+| Média de CPU em operação     |   2.85%   |       3.84%        |
+| Pico de CPU em operação      |   3.54%   |       6.20%        |
+| Uso de Memória em iddle      |  111MiB   |         0          |
+| Média de Memória em operação |  111MiB   |       254MiB       |
+| Pico de Memória em operação  |  111MiB   |       453MiB       |
