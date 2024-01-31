@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: malabi
+  namespace: malabi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: malabi
+  template:
+    metadata:
+      labels:
+        app: malabi
+    spec:
+      containers:
+        - name: malabi
+          image: dev.local/malabi:sc1
+          imagePullPolicy: Never
