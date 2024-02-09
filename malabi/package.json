@@ -5,7 +5,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "MALABI_ENDPOINT_PORT_OR_URL=http://localhost:18393 ts-mocha --paths \"./test/*.ts\" --require \"./test/tracing.ts\" --timeout 10000"
+		"test": "MALABI_ENDPOINT_PORT_OR_URL=http://localhost:18393 FRONTEND_SERVICE_ADDR='http://localhost:8080' ts-mocha --paths \"./test/*.ts\" --require \"./test/tracing.ts\" --timeout 10000 --exit"
 	},
 	"keywords": [],
 	"author": "",

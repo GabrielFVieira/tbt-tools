@@ -61,32 +61,6 @@ describe("Application flow simulating the user interaction when trying to buy a 
 		});
 	});
 
-
-
-
-	describe("Sample test", () => {
-		let traceloop: TraceLoop;
-		beforeAll(async () => {
-			traceloop = new TraceLoop();
-
-			await traceloop.axiosInstance.get(`${FRONTEND_SERVICE_ADDR}/api/products`);
-			await traceloop.fetchTraces(FETCH_TRACES_CONFIG);
-		});
-
-		it(`Frontend endpoint should be called on GET /api/products/${TEST_PRODUCT_ID}`, async () => {
-			expectTrace(traceloop.serviceByName("frontend")).;
-		});
-	});
-
-
-
-
-
-
-
-
-
-
 	describe("Get products recommendations", () => {
 		let traceloop: TraceLoop;
 		beforeAll(async () => {

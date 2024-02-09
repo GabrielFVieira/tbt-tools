@@ -1,5 +1,6 @@
 JEST_OTEL_FOLDER=jest-opentelemetry
 TRACETEST_FOLDER=tracetest
+MALABI_FOLDER=malabi
 
 ##@ General
 
@@ -29,3 +30,13 @@ tracetest-setup: ## Install the tracetest tests on the server
 .PHONY: tracetest-run
 tracetest-run: ## Run the tracetest tests on the server
 	@ bash ./${TRACETEST_FOLDER}/run.sh
+
+##@ Jest OpenTelemetry
+
+.PHONY: malabi-build
+malabi-build: ## Install the malabi dependencies
+	@ cd ${MALABI_FOLDER} && npm install
+
+.PHONY: malabi-run
+malabi-run: ## Run the malabi tests
+	@ cd ${MALABI_FOLDER} && npm run test
