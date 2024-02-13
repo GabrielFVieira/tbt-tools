@@ -5,7 +5,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "MALABI_ENDPOINT_PORT_OR_URL=http://localhost:18393 FRONTEND_SERVICE_ADDR='http://localhost:8080' ts-mocha --paths \"./test/*.ts\" --require \"./test/tracing.ts\" --timeout 10000 --exit"
+		"test": "MALABI_ENDPOINT_PORT_OR_URL=http://localhost:18393 PAYMENT_SERVICE_ADDR=http://localhost:8086 FRONTEND_SERVICE_ADDR=http://localhost:8080 ts-mocha --paths \"./test/*.ts\" --require \"./test/tracing.ts\" --timeout 10000 --exit",
+		"test:k8s": "MALABI_ENDPOINT_PORT_OR_URL=http://otel-demo-paymentservice.otel-demo.svc.cluster.local:18393 PAYMENT_SERVICE_ADDR=http://otel-demo-paymentservice.otel-demo.svc.cluster.local:8080 FRONTEND_SERVICE_ADDR='http://otel-demo-frontend.otel-demo.svc.cluster.local:8080' ts-mocha --paths \"./test/*.ts\" --require \"./test/tracing.ts\" --timeout 10000 --exit"
 	},
 	"keywords": [],
 	"author": "",

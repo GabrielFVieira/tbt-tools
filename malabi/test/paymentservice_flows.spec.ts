@@ -1,4 +1,5 @@
-const SERVICE_UNDER_TEST_PORT = process.env.PORT || 8086;
+const { PAYMENT_SERVICE_ADDR = "" } = process.env;
+
 
 import { malabi } from 'malabi';
 
@@ -8,17 +9,17 @@ import axios from 'axios';
 describe('Charge requests', () => {
     it('Card successfuly charged', async () => {
         const telemetryRepo = await malabi( async () => {
-			await axios.post(`http://localhost:${SERVICE_UNDER_TEST_PORT}/api/v1/pay`, {
+			await axios.post(`${PAYMENT_SERVICE_ADDR}/api/v1/pay`, {
 				amount: {
 					currencyCode: "USD",
 					nanos: 0,
 					units: 1
 				},
 				creditCard: {
-					creditCardCvv: 123,
-					creditCardExpirationMonth: 12,
-					creditCardExpirationYear: 2024,
-					creditCardNumber: "4432-8015-6152-0454"
+					creditCardCvv: 951,
+					creditCardExpirationMonth: 8,
+					creditCardExpirationYear: 2029,
+					creditCardNumber: "5491-6794-7557-0103"
 				}
 			}).catch(()=>{});
         });
@@ -31,14 +32,14 @@ describe('Charge requests', () => {
 
 		const chargeSpans = telemetryRepo.spans.all.filter(span => span.name == "charge")
 		expect(chargeSpans.length).equals(1);
-		expect(chargeSpans[0].attribute("app.payment.card_type").toString()).equals("visa")
+		expect(chargeSpans[0].attribute("app.payment.card_type").toString()).equals("mastercard")
 		expect(chargeSpans[0].attribute("app.payment.card_valid").valueOf()).equals(true)
 		expect(chargeSpans[0].attribute("app.payment.charged").valueOf()).equals(true)
     });
 
     it('Invalid card number', async () => {
         const telemetryRepo = await malabi( async () => {
-			await axios.post(`http://localhost:${SERVICE_UNDER_TEST_PORT}/api/v1/pay`, {
+			await axios.post(`${PAYMENT_SERVICE_ADDR}/api/v1/pay`, {
 				amount: {
 					currencyCode: "USD",
 					nanos: 0,
@@ -66,7 +67,7 @@ describe('Charge requests', () => {
 
 	it('Invalid card type', async () => {
         const telemetryRepo = await malabi( async () => {
-			await axios.post(`http://localhost:${SERVICE_UNDER_TEST_PORT}/api/v1/pay`, {
+			await axios.post(`${PAYMENT_SERVICE_ADDR}/api/v1/pay`, {
 				amount: {
 					currencyCode: "USD",
 					nanos: 0,

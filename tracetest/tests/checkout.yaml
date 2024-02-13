@@ -47,7 +47,7 @@ spec:
       assertions:
         - attr:rpc.grpc.status_code = 0
         - attr:tracetest.selected_spans.count >= 1
-    - selector: span[tracetest.span.type="http" name="oteldemo.CartService/EmptyCart" http.target="/oteldemo.CartService/EmptyCart" http.method="POST"]
+    - selector: span[name="oteldemo.CartService/EmptyCart" rpc.system="grpc" rpc.method="EmptyCart" rpc.service="oteldemo.CartService"]
       name: Cart was emptied
       assertions:
         - attr:rpc.grpc.status_code = 0

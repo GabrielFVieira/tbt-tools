@@ -21,7 +21,15 @@ jestotel-run: ## Run the jest-opentelemetry tests
 jestotel-receiver: ## Run thje jest-opentelemetry receiver application
 	@ node jest-opentelemetry/node_modules/@traceloop/otel-receiver/dist/index.js
 
-##@ Jest OpenTelemetry
+.PHONY: jestotel-k8s
+jestotel-k8s: ## Run the jest-opentelemetry tests
+	@ docker build -t dev.local/jestotel:sc1 ./${JEST_OTEL_FOLDER}
+	@ kind load docker-image dev.local/jestotel:sc1 --name tbt-tests
+	@ kubectl create namespace jest-opentelemetry --dry-run=client -o yaml | kubectl apply -f -
+	@ kubectl delete deployment jestotel -n jest-opentelemetry || true
+	@ kubectl create -f ${JEST_OTEL_FOLDER}/k8s/deployment.yaml
+
+##@ Tracetest
 
 .PHONY: tracetest-setup
 tracetest-setup: ## Install the tracetest tests on the server
@@ -31,7 +39,7 @@ tracetest-setup: ## Install the tracetest tests on the server
 tracetest-run: ## Run the tracetest tests on the server
 	@ bash ./${TRACETEST_FOLDER}/run.sh
 
-##@ Jest OpenTelemetry
+##@ Malabi
 
 .PHONY: malabi-build
 malabi-build: ## Install the malabi dependencies
@@ -40,3 +48,11 @@ malabi-build: ## Install the malabi dependencies
 .PHONY: malabi-run
 malabi-run: ## Run the malabi tests
 	@ cd ${MALABI_FOLDER} && npm run test
+
+.PHONY: malabi-k8s
+malabi-k8s: ## Run the malabi tests
+	@ docker build -t dev.local/malabi:sc1 ./${MALABI_FOLDER}
+	@ kind load docker-image dev.local/malabi:sc1 --name tbt-tests
+	@ kubectl create namespace malabi --dry-run=client -o yaml | kubectl apply -f -
+	@ kubectl delete deployment malabi -n malabi || true
+	@ kubectl create -f ${MALABI_FOLDER}/k8s/deployment.yaml
