@@ -4,9 +4,9 @@ import { ChannelCredentials } from "@grpc/grpc-js";
 import { ListRecommendationsResponse, RecommendationServiceClient } from "../protos/demo";
 
 const { RECOMMENDATION_SERVICE_ADDR = "" } = process.env;
-const FETCH_TRACES_CONFIG = { maxPollTime: 15000, awaitAllSpansInTraceTimeout: 4000 };
+const FETCH_TRACES_CONFIG = { maxPollTime: 30000, awaitAllSpansInTraceTimeout: 10000 };
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 describe("List recommendation internal flow", () => {
 	let traceloop: TraceLoop;

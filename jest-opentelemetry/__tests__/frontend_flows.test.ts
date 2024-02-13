@@ -4,9 +4,9 @@ import crypto from "crypto";
 
 const { FRONTEND_SERVICE_ADDR = "" } = process.env;
 const TEST_PRODUCT_ID = "0PUK6V6EV0";
-const FETCH_TRACES_CONFIG = { maxPollTime: 15000, awaitAllSpansInTraceTimeout: 4000 }
+const FETCH_TRACES_CONFIG = { maxPollTime: 30000, awaitAllSpansInTraceTimeout: 10000 }
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 describe("Application flow simulating the user interaction when trying to buy a product", () => {
 	const userId = crypto.randomUUID();

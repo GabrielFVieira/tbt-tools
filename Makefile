@@ -26,7 +26,7 @@ jestotel-k8s: ## Run the jest-opentelemetry tests
 	@ docker build -t dev.local/jestotel:sc1 ./${JEST_OTEL_FOLDER}
 	@ kind load docker-image dev.local/jestotel:sc1 --name tbt-tests
 	@ kubectl create namespace jest-opentelemetry --dry-run=client -o yaml | kubectl apply -f -
-	@ kubectl delete deployment jestotel -n jest-opentelemetry || true
+	@ kubectl delete -f ${JEST_OTEL_FOLDER}/k8s/deployment.yaml || true
 	@ kubectl create -f ${JEST_OTEL_FOLDER}/k8s/deployment.yaml
 
 ##@ Tracetest
@@ -54,5 +54,5 @@ malabi-k8s: ## Run the malabi tests
 	@ docker build -t dev.local/malabi:sc1 ./${MALABI_FOLDER}
 	@ kind load docker-image dev.local/malabi:sc1 --name tbt-tests
 	@ kubectl create namespace malabi --dry-run=client -o yaml | kubectl apply -f -
-	@ kubectl delete deployment malabi -n malabi || true
+	@ kubectl -f ${MALABI_FOLDER}/k8s/deployment.yaml || true
 	@ kubectl create -f ${MALABI_FOLDER}/k8s/deployment.yaml
