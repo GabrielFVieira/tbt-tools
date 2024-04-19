@@ -1,4 +1,4 @@
-# Trace-Based Testing Utils
+# Trace-Based Testing Tools
 
 Este repositório contém os testes gerados em cada uma das ferramentas analisadas, além de comandos para auxiliar a execução dos mesmos.
 
