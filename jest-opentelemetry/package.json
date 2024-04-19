@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "jest"
+		"test": "TRACELOOP_URL='http://localhost:4123/v1/traces' FRONTEND_SERVICE_ADDR='http://host.docker.internal:8080' RECOMMENDATION_SERVICE_ADDR='localhost:8083' jest",
+		"test:k8s": "TRACELOOP_URL='http://localhost:4123/v1/traces' FRONTEND_SERVICE_ADDR='http://otel-demo-frontend.otel-demo.svc.cluster.local:8080' RECOMMENDATION_SERVICE_ADDR='otel-demo-recommendationservice.otel-demo.svc.cluster.local:8080' jest"
 	},
 	"keywords": [],
 	"author": "",
@@ -22,6 +23,7 @@
 		"@grpc/proto-loader": "^0.7.10",
 		"@traceloop/jest-environment-otel": "^0.8.0",
 		"@traceloop/jest-opentelemetry": "^0.8.0",
+		"crypto": "^1.0.1",
 		"ts-proto": "^1.165.0"
 	},
 	"type": "commonjs"

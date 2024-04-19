@@ -1,0 +1,10 @@
+type: VariableSet
+spec:
+  id: K7Dkt3NIg
+  name: Otel Demo
+  description: Otel demo tests variables
+  values:
+    - key: FRONTEND_ADDRESS
+      value: http://otel-demo-frontend.otel-demo.svc.cluster.local:8080
+    - key: RECOMMENDATION_SVC_ADDRESS
+      value: otel-demo-recommendationservice.otel-demo.svc.cluster.local:8080

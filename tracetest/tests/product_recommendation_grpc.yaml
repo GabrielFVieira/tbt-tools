@@ -1,0 +1,30 @@
+type: Test
+spec:
+  id: _mX6EqHIg
+  name: Product Recommendation- gRPC
+  trigger:
+    type: grpc
+    grpc:
+      protobufFile: ../../../tbt-system/pb/demo.proto
+      address: ${env:RECOMMENDATION_SVC_ADDRESS}
+      method: oteldemo.RecommendationService.ListRecommendations
+      auth: {}
+  specs:
+    - selector: span[tracetest.span.type="general" name="Tracetest trigger"]
+      name: Test trigger should receive a success response with 5 recommended products
+      assertions:
+        - attr:tracetest.response.status      =   0
+        - attr:tracetest.response.body | json_path '$.productIds[*]' | length        =    5
+    - selector: span[tracetest.span.type="rpc" name="oteldemo.ProductCatalogService/ListProducts" rpc.system="grpc" rpc.method="ListProducts" rpc.service="oteldemo.ProductCatalogService"]
+      name: ProductCatalogService/ListProducts should be called via gRPC
+      assertions:
+        - attr:rpc.grpc.status_code  =  0
+    - selector: span[tracetest.span.type="rpc" name="/oteldemo.FeatureFlagService/GetFlag" rpc.system="grpc" app.featureflag.name="recommendationCache"]
+      name: FeatureFlagService/GetFlag should be called checking the value of the recommendationCache flag
+      assertions:
+        - attr:app.featureflag.enabled != ""
+    - selector: span[tracetest.span.type="database" name="featureflagservice.repo.query:featureflags" db.name="ffs"]
+      name: Feature flag database should be called by it's service
+      assertions:
+        - attr:source  =  "featureflags"
+        - attr:tracetest.span.type  =  "database"

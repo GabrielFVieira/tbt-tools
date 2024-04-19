@@ -11,4 +11,5 @@ module.exports = {
 		"is-typedarray",
 	],
 	testEnvironment: "jest-environment-node",
+	testTimeout: 1000000,
 };

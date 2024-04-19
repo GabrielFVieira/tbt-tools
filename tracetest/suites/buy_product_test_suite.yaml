@@ -1,0 +1,11 @@
+type: TestSuite
+spec:
+  id: 5pdFPqNSg
+  name: Buy Product
+  description: "Application flow simulating the user interaction when trying to buy a product"
+  steps:
+    - ../tests/list_products.yaml
+    - ../tests/get_product.yaml
+    - ../tests/product_recommendation.yaml
+    - ../tests/add_to_cart.yaml
+    - ../tests/checkout.yaml

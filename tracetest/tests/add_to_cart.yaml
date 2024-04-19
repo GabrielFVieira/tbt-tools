@@ -1,0 +1,47 @@
+type: Test
+spec:
+  id: zdrHoqHIR
+  name: Add To Cart
+  trigger:
+    type: http
+    httpRequest:
+      method: POST
+      url: ${env:FRONTEND_ADDRESS}/api/cart
+      body: '{"item": {"productId": "${env:otel.product.id}","quantity": 1},"userId": "${uuid()}"}'
+      headers:
+        - key: Content-Type
+          value: application/json
+  specs:
+    - selector: span[tracetest.span.type="general" name="Tracetest trigger"]
+      name: Test trigger should receive a success response from frontend with the given product on the cart
+      assertions:
+        - attr:tracetest.response.status         =         200
+        - attr:tracetest.response.body | json_path '$.items[0].productId'        =      "${env:otel.product.id}"
+    - selector: span[name="oteldemo.CartService/AddItem" rpc.system="grpc" rpc.method="AddItem" rpc.service="oteldemo.CartService"]
+      name: CartService should be called to add the given product on the cart
+      assertions:
+        - attr:rpc.grpc.status_code       =       0
+        - attr:app.product.quantity       =       1
+        - attr:app.product.id      =     "${env:otel.product.id}"
+        - attr:app.user.id = "${env:otel.user.id}"
+    - selector: span[name="oteldemo.CartService/GetCart" rpc.system="grpc" rpc.method="GetCart" rpc.service="oteldemo.CartService"]
+      name: CartService should be called to get the given user cart
+      assertions:
+        - attr:rpc.grpc.status_code     =     0
+        - attr:app.user.id     =    "${env:otel.user.id}"
+    - selector: span[tracetest.span.type="database" db.system="redis"]
+      name: Redis database should be called and last less than 100ms
+      assertions:
+        - attr:tracetest.span.duration < 100ms
+    - selector: span[tracetest.span.type="database" name="HGET" db.system="redis"]
+      name: Cart retrieved from redis database
+      assertions:
+        - attr:db.statement = "HGET ${env:otel.user.id}"
+    - selector: span[tracetest.span.type="database" name="HMSET" db.system="redis"]
+      name: Cart item set on redis database
+      assertions:
+        - attr:db.statement = "HMSET ${env:otel.user.id}"
+  outputs:
+    - name: otel.user.id
+      selector: span[tracetest.span.type="general" name="Tracetest trigger"]
+      value: attr:tracetest.response.body | json_path '$.userId'

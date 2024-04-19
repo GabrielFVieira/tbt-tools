@@ -1,0 +1,27 @@
+{
+	"name": "malabi-tests",
+	"version": "1.0.0",
+	"description": "",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "MALABI_ENDPOINT_PORT_OR_URL=http://localhost:18393 PAYMENT_SERVICE_ADDR=http://localhost:8086 FRONTEND_SERVICE_ADDR=http://localhost:8080 ts-mocha --paths \"./test/*.ts\" --require \"./test/tracing.ts\" --timeout 10000 --exit",
+		"test:k8s": "MALABI_ENDPOINT_PORT_OR_URL=http://otel-demo-paymentservice.otel-demo.svc.cluster.local:18393 PAYMENT_SERVICE_ADDR=http://otel-demo-paymentservice.otel-demo.svc.cluster.local:8080 FRONTEND_SERVICE_ADDR='http://otel-demo-frontend.otel-demo.svc.cluster.local:8080' ts-mocha --paths \"./test/*.ts\" --require \"./test/tracing.ts\" --timeout 10000 --exit"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"private": true,
+	"dependencies": {
+		"axios": "^0.21.1"
+	},
+	"devDependencies": {
+		"@types/expect": "^24.3.0",
+		"@types/mocha": "^8.0.0",
+		"chai": "^4.3.4",
+		"malabi": "^0.0.7-alpha.1",
+		"mocha": "^8.1.3",
+		"ts-mocha": "^8.0.0",
+		"typescript": "^4.2.4"
+	}
+}
