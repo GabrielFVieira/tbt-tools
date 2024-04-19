@@ -1,4 +1,70 @@
+# Trace-Based Testing Utils
+
+Este repositório contém os testes gerados em cada uma das ferramentas analisadas, além de comandos para auxiliar a execução dos mesmos.
+
+## Como utilizar:
+
+Primeiramente deve-se baixar todas as dependências através do comando `make install-dependencies` presente no repositório [tbt-utils](https://github.com/GabrielFVieira/tbt-utils). Após isso, é possível utilizar o comando `make` na raíz do atual repositório para visualizar os comandos disponíveis.
+
+Para buildar os testes das ferramentas Jest OpenTelemetry e Malabi é necessário instalar primeiramente o NodeJs, que pode ser encontrado na página https://nodejs.org/en.
+
+O repositório foi construído e utilizado no sistema operacional linux, portanto, podem haver a necessidade de algumas alterações para utilizá-lo em outro sistema operacional.
+
+### Preprando o ambiente:
+
+- Tracetest
+
+    ```sh
+    ## Irá instalar as dependências no servidor do tracetest dentro do cluster
+    make tracetest-setup
+    ```
+
+- Jest OpenTelemetry
+
+    ```sh
+    ## Irá instalar as dependências e buildar o projeto
+    make jestotel-build
+    ```
+
+- Malabi
+
+    ```sh
+    ## Irá instalar as dependências e buildar o projeto
+    make malabi-build
+    ```
+
+### Executando os testes:
+
+- Tracetest
+
+    ```sh
+    ## Executa os testes no servidor do tracetest dentro do cluster
+    make jestotel-run
+    ```
+
+- Jest OpenTelemetry
+
+    ```sh
+    ## Executa os testes localmente
+    make jestotel-run
+
+    ## Executa os testes dentro do cluster
+    make jestotel-k8s
+    ```
+
+- Malabi
+
+    ```sh
+    ## Executa os testes localmente
+    make malabi-run
+
+    ## Executa os testes dentro do cluster
+    make malabi-k8s
+    ```
+
 ## Cenários de teste:
+
+Abaixo segue a descrição dos cenários de teste idealizados para a análise das ferramentas, contendo diagramas do fluxo de chamadas entre os serviços.
 
 - ### 1 - Sistema 100% funcional
 
@@ -88,20 +154,3 @@
   #### Fluxos do sistema a testar:
 
   Os testes dos fluxos **Obter recomendações** e **Realizar compra** deverão apresentar falhas e sinalizar que traces não ocorreram no fluxo.
-
-## Dados sobre as ferramentas:
-
-|                              | Tracetest | Jest OpenTelemetry |
-| ---------------------------- | :-------: | :----------------: |
-| **TESTES**                   |           |                    |
-| Fluxos testados              |     6     |         6          |
-| Traces testados              |    34     |         30         |
-| Asserts individuais          |    67     |         84         |
-|                              |           |                    |
-| **RECURSOS**                 |           |                    |
-| Uso de CPU em iddle          |   2.31%   |         0          |
-| Média de CPU em operação     |   2.85%   |       3.84%        |
-| Pico de CPU em operação      |   3.54%   |       6.20%        |
-| Uso de Memória em iddle      |  111MiB   |         0          |
-| Média de Memória em operação |  111MiB   |       254MiB       |
-| Pico de Memória em operação  |  111MiB   |       453MiB       |
